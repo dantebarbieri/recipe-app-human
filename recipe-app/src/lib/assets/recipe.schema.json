@@ -1,0 +1,194 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.com/product.schema.json",
+    "title": "Recipe",
+    "description": "A recipe in the catalog",
+    "type": "object",
+    "properties": {
+        "title": {
+            "description": "The title of a recipe, displayed to users",
+            "type": "string"
+        },
+        "slug": {
+            "description": "The unique identifier for a recipe",
+            "type": "string"
+        },
+        "prepTime": {
+            "description": "The time spent preparing to cook a recipe (minutes)",
+            "type": "number",
+            "minimum": 0
+        },
+        "cookTime": {
+            "description": "The time spent cooking a recipe (minutes)",
+            "type": "number",
+            "exclusiveMinimum": 0
+        },
+        "totalTime": {
+            "description": "The total time spent before food is ready to eat (minutes; includes prep, cooking, cooling, etc.)",
+            "type": "number",
+            "exclusiveMinimum": 0
+        },
+        "ingredients": {
+            "description": "The components required to cook the recipe",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "quantity": {
+                        "description": "The amount of the ingredient required for the recipe",
+                        "type": "number"
+                    },
+                    "unit": {
+                        "description": "The measurement of the quantity required for the recipe",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "The common name of the ingredient required for the recipe",
+                        "type": "string"
+                    }
+                },
+                "required": ["quantity", "unit", "name"]
+            },
+            "minItems": 1
+        },
+        "steps": {
+            "description": "The steps required to cook the recipe",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1
+        },
+        "nutrition": {
+            "type": "object",
+            "properties": {
+                "servings": {
+                    "description": "The number of servings of the recipe",
+                    "type": "number",
+                    "minimum": 1
+                },
+                "servingSize": {
+                    "description": "The reccommended amount to eat per serving",
+                    "type": "object",
+                    "properties": {
+                        "quantity": {
+                            "description": "The numeric value for how much to eat",
+                            "type": "number",
+                            "exclusiveMinimum": 0
+                        },
+                        "unit": {
+                            "description": "The measurement of the quantity recommended to eat",
+                            "type": "string"
+                        },
+                        "weight": {
+                            "description": "The weight (in grams, rounded up) recommended to eat",
+                            "type": "integer",
+                            "exclusiveMinimum": 0
+                        }
+                    },
+                    "required": ["quantity", "unit"]
+                },
+                "calories": {
+                    "description": "The number of kilocalories per serving",
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 0
+                },
+                "fat": {
+                    "description": "The values for fats",
+                    "type": "object",
+                    "properties": {
+                        "total": {
+                            "description": "The total fat (in grams)",
+                            "type": "integer",
+                            "minimum": 0,
+                            "default": 0
+                        },
+                        "saturated": {
+                            "description": "The saturated fat (in grams)",
+                            "type": "integer",
+                            "minimum": 0,
+                            "default": 0
+                        },
+                        "trans": {
+                            "description": "The trans fat (in grams)",
+                            "type": "integer",
+                            "minimum": 0,
+                            "default": 0
+                        }
+                    },
+                    "required": ["total", "saturated", "trans"]
+                },
+                "cholesterol": {
+                    "description": "The value for cholesterol (in milligrams)",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "sodium": {
+                    "description": "The value for sodium (in milligrams)",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "carbs": {
+                    "description": "The values for carbohydrates (sugars)",
+                    "type": "object",
+                    "properties": {
+                        "total": {
+                            "description": "The total carbs (in grams)",
+                            "type": "integer",
+                            "minimum": 0,
+                            "default": 0
+                        },
+                        "fiber": {
+                            "description": "The dietary fiber (in grams)",
+                            "type": "integer",
+                            "minimum": 0,
+                            "default": 0
+                        },
+                        "sugars": {
+                            "description": "The sugars",
+                            "type": "object",
+                            "properties": {
+                                "total": {
+                                    "description": "The total sugars (in grams)",
+                                    "type": "integer",
+                                    "mininum": 0,
+                                    "default": 0
+                                },
+                                "added": {
+                                    "description": "The added sugars (in grams)",
+                                    "type": "integer",
+                                    "mininum": 0,
+                                    "default": 0
+                                }
+                            },
+                            "required": ["total", "added"]
+                        }
+                    },
+                    "required": ["total", "fiber", "sugars"]
+                },
+                "protein": {
+                    "description": "The value for protein (in grams)",
+                    "type": "integer",
+                    "minimum": 0
+                }
+            },
+            "required": ["servings", "servingSize", "calories", "fat", "cholesterol", "sodium", "carbs", "protein"]
+        },
+        "tags": {
+            "description": "Recipe tags, such as allergens, vegetarian, spiciness, kosher/halal, etc.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    },
+    "required": [
+        "slug",
+        "title",
+        "ingredients",
+        "steps"
+    ]
+}
