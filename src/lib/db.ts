@@ -1,17 +1,45 @@
 import { compileSchema, type SchemaNode } from "json-schema-library";
-import fs from 'fs/promises';
+import fs, { constants } from 'fs/promises';
 import nutritionJsonSchema from '$lib/assets/schemas/nutrition.schema.json';
 import recipeJsonSchema from "$lib/assets/schemas/recipe.schema.json";
 import { type Recipe } from '$lib/assets/types/recipe'
+import { env } from "$env/dynamic/private";
+import path from "path";
+import { dev } from "$app/environment";
 
-const getDatabasePath = (): URL => new URL('recipes/', import.meta.url);
+const getDatabasePath = (): string => {
+    const configuredPath = env.RECIPE_DATA_DIR;
 
-const getPathFromSlug = (slug: string): URL => new URL(`${slug}.json`, getDatabasePath());
+    if (configuredPath) {
+        return path.resolve(configuredPath);
+    }
+
+    if (dev) {
+        return path.resolve('src/lib/recipes');
+    }
+
+    throw new Error('RECIPE_DATA_DIR must be configured in production');
+};
+
+const getPathFromSlug = (slug: string): string => {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+        throw new Error(`Invalid recipe slug: ${slug}`);
+    }
+
+    return path.join(getDatabasePath(), `${slug}.json`);
+};
 
 const schema: SchemaNode = compileSchema(recipeJsonSchema, {
     remotes: [nutritionJsonSchema],
     throwOnInvalidRef: true
 });
+
+export const checkRecipeDatabase = async (): Promise<void> => {
+    const directory = getDatabasePath();
+
+    await fs.access(directory, constants.R_OK | constants.W_OK);
+    await fs.readdir(directory);
+};
 
 export const getRecipeFromDatabase = async (slug: string): Promise<Recipe | undefined> => {
     const path = getPathFromSlug(slug)
@@ -38,30 +66,24 @@ export const getRecipeFromDatabase = async (slug: string): Promise<Recipe | unde
     return undefined;
 }
 
-const removeExtension = (s: string) => s.substring(0, s.lastIndexOf('.'));
-
 export const listRecipesFromDatabase = async (): Promise<Recipe[]> => {
-    const path = getDatabasePath()
-    const retval: Recipe[] = [];
+    const recipes: Recipe[] = [];
 
-    try {
-        const contents = await fs.readdir(path, { encoding: "utf-8", withFileTypes: true });
+    const files = await fs.readdir(getDatabasePath(), {
+        withFileTypes: true
+    });
 
-        for (const file of contents) {
-            try {
-                const recipe = await getRecipeFromDatabase(removeExtension(file.name))
-                if (recipe)
-                    retval.push(recipe);
-            }
-            catch {
-                console.error(file);
-            }
-        }
-    } catch (err) {
-        console.error(err);
+    for (const file of files) {
+        if (!file.isFile() || path.extname(file.name) !== '.json') continue;
+
+        const recipe = await getRecipeFromDatabase(
+            path.basename(file.name, '.json')
+        );
+
+        if (recipe) recipes.push(recipe);
     }
 
-    return retval;
+    return recipes;
 }
 
 export const setRecipeToDatabase = async (slug: string, recipe: Recipe): Promise<void> => {

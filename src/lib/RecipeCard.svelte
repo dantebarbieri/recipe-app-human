@@ -15,46 +15,46 @@
 		{#if recipe.prepTime || recipe.cookTime || recipe.totalTime}
 			<div class="timing">
 				{#if recipe.prepTime}
-					<label for="prep-time">
+					<label for="prep-time--{recipe.slug}">
 						Prep Time<br />
-						<span id="prep-time">{recipe.prepTime}</span>
+						<span id="prep-time--{recipe.slug}">{recipe.prepTime}</span>
 						minutes
 					</label>
 				{/if}
 				{#if recipe.cookTime}
-					<label for="cook-time">
+					<label for="cook-time--{recipe.slug}">
 						Cook Time<br />
-						<span id="cook-time">{recipe.cookTime}</span>
+						<span id="cook-time--{recipe.slug}">{recipe.cookTime}</span>
 						minutes
 					</label>
 				{/if}
 				{#if recipe.totalTime}
-					<label for="total-time">
+					<label for="total-time--{recipe.slug}">
 						Total Time<br />
-						<span id="cook-time">{recipe.totalTime}</span>
+						<span id="total-time--{recipe.slug}">{recipe.totalTime}</span>
 						minutes
 					</label>
 				{/if}
 			</div>
 		{/if}
 		<div class="metadata">
-			<label for="ingredients">
-				<span id="ingregients">{recipe.ingredients.length}</span>
+			<label for="ingredients--{recipe.slug}">
+				<span id="ingredients--{recipe.slug}">{recipe.ingredients.length}</span>
 				Ingredient{#if recipe.ingredients.length > 1}s{/if}
 			</label>
-			<label for="steps">
-				<span id="steps">{recipe.steps.length}</span>
+			<label for="steps--{recipe.slug}">
+				<span id="steps--{recipe.slug}">{recipe.steps.length}</span>
 				Step{#if recipe.steps.length > 1}s{/if}
 			</label>
 		</div>
 		{#if recipe.nutrition}
 			<p>
 				Produces
-				<span id="servings">{recipe.nutrition.servings}</span>
-				<label for="servings">servings</label>
+				<span id="servings--{recipe.slug}">{recipe.nutrition.servings}</span>
+				<label for="servings--{recipe.slug}">servings</label>
 				of
-				<span id="calories">{roundCalories(recipe.nutrition.calories)}</span>
-				<label for="calories">calories</label>
+				<span id="calories--{recipe.slug}">{roundCalories(recipe.nutrition.calories)}</span>
+				<label for="calories--{recipe.slug}">calories</label>
 				per serving.
 			</p>
 		{/if}
@@ -119,4 +119,8 @@
 		border-radius: 1em;
 		padding: 0 0.5em;
 	}
+
+    .tag:hover, .tag:focus {
+        background-color: #eee;
+    }
 </style>

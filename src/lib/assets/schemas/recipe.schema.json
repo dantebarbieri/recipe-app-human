@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "http://localhost:5173/schemas/recipe.schema.json",
+    "$id": "https://recipe.danteb.com/schemas/recipe.schema.json",
     "title": "Recipe",
     "description": "A recipe in the catalog",
     "type": "object",
