@@ -1,0 +1,147 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "http://localhost:5173/schemas/nutrition.schema.json",
+    "title": "Nutrition",
+    "description": "Nutrition information for a food",
+    "type": "object",
+    "properties": {
+        "servings": {
+            "description": "The number of servings of the food",
+            "type": "number",
+            "minimum": 1
+        },
+        "servingSize": {
+            "description": "The reccommended amount to eat per serving",
+            "type": "object",
+            "properties": {
+                "quantity": {
+                    "description": "The numeric value for how much to eat",
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                },
+                "unit": {
+                    "description": "The measurement of the quantity recommended to eat",
+                    "type": "string"
+                },
+                "weight": {
+                    "description": "The weight (in weightUnit, rounded up) recommended to consume",
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                },
+                "weightUnit": {
+                    "description": "The unit of weight/volume usu. g or ml",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "quantity",
+                "unit"
+            ]
+        },
+        "calories": {
+            "description": "The number of kilocalories per serving",
+            "type": "number",
+            "minimum": 0,
+            "default": 0
+        },
+        "fat": {
+            "description": "The values for fats",
+            "type": "object",
+            "properties": {
+                "total": {
+                    "description": "The total fat (in grams)",
+                    "type": "number",
+                    "minimum": 0,
+                    "default": 0
+                },
+                "saturated": {
+                    "description": "The saturated fat (in grams)",
+                    "type": "number",
+                    "minimum": 0,
+                    "default": 0
+                },
+                "trans": {
+                    "description": "The trans fat (in grams)",
+                    "type": "number",
+                    "minimum": 0,
+                    "default": 0
+                }
+            },
+            "required": [
+                "total",
+                "saturated",
+                "trans"
+            ]
+        },
+        "cholesterol": {
+            "description": "The value for cholesterol (in milligrams)",
+            "type": "number",
+            "minimum": 0
+        },
+        "sodium": {
+            "description": "The value for sodium (in milligrams)",
+            "type": "number",
+            "minimum": 0
+        },
+        "carbs": {
+            "description": "The values for carbohydrates (sugars)",
+            "type": "object",
+            "properties": {
+                "total": {
+                    "description": "The total carbs (in grams)",
+                    "type": "number",
+                    "minimum": 0,
+                    "default": 0
+                },
+                "fiber": {
+                    "description": "The dietary fiber (in grams)",
+                    "type": "number",
+                    "minimum": 0,
+                    "default": 0
+                },
+                "sugars": {
+                    "description": "The sugars",
+                    "type": "object",
+                    "properties": {
+                        "total": {
+                            "description": "The total sugars (in grams)",
+                            "type": "number",
+                            "minimum": 0,
+                            "default": 0
+                        },
+                        "added": {
+                            "description": "The added sugars (in grams)",
+                            "type": "number",
+                            "minimum": 0,
+                            "default": 0
+                        }
+                    },
+                    "required": [
+                        "total",
+                        "added"
+                    ]
+                }
+            },
+            "required": [
+                "total",
+                "fiber",
+                "sugars"
+            ]
+        },
+        "protein": {
+            "description": "The value for protein (in grams)",
+            "type": "number",
+            "minimum": 0
+        }
+    },
+    "required": [
+        "servings",
+        "servingSize",
+        "calories",
+        "fat",
+        "cholesterol",
+        "sodium",
+        "carbs",
+        "protein"
+    ]
+}

@@ -11,7 +11,11 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"generate:types": "node scripts/generate-schema-types.mjs",
+		"predev": "npm run generate:types",
+		"prebuild": "npm run generate:types",
+		"precheck": "npm run generate:types"
 	},
 	"dependencies": {
 		"json-schema-library": "^11.6.2"
@@ -26,6 +30,7 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.19.0",
 		"globals": "^17.6.0",
+		"json-schema-to-typescript": "^15.0.4",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",
 		"svelte": "^5.56.1",
