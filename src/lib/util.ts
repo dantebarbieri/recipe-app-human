@@ -78,6 +78,17 @@ const maxDecimals = (n: number, d: number): string => n != Math.floor(n) ? n.toL
     maximumFractionDigits: d
 }) : n.toLocaleString();
 
+export const roundWeight = (weight: number): string => {
+    switch (true) {
+        case weight < 5:
+            return '0';
+        case weight < 50:
+            return maxDecimals(roundNearest(weight, 5), 0);
+        default:
+            return maxDecimals(roundNearest(weight, 10), 0);
+    }
+}
+
 export const roundCalories = (c: number): string => {
     switch (true) {
         case c < 5:

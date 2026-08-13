@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { NutritionDailyValues, roundCalories, roundCarbs, roundCholesterol, roundFat, roundProtein, roundSodium } from "$lib/util";
+	import { NutritionDailyValues, roundCalories, roundCarbs, roundCholesterol, roundFat, roundProtein, roundSodium, roundWeight } from "$lib/util";
 	import type { Nutrition } from "./assets/types/nutrition";
 	import { toVulgar, vulgarString } from "./util";
 
@@ -31,7 +31,7 @@
 			<p>{vulgarServingsText} servings per container</p>
 		</div>
 		<div class="facts_serving_size">
-			<label for="serving-size">Serving size</label> <span id="serving-size">{vulgarServingSizeText} {nutrition.servingSize.unit} {#if nutrition.servingSize.weight && nutrition.servingSize.weightUnit}({nutrition.servingSize.weight}{nutrition.servingSize.weightUnit}){/if}</span>
+			<label for="serving-size">Serving size</label> <span id="serving-size">{vulgarServingSizeText} {nutrition.servingSize.unit} {#if nutrition.servingSize.weight && nutrition.servingSize.weightUnit}({roundWeight(nutrition.servingSize.weight)}{nutrition.servingSize.weightUnit}){/if}</span>
 		</div>
 		<div class="facts_box">
 			<div class="fact_row_norule"><small>Amount Per Serving</small></div>
@@ -151,7 +151,7 @@
 		position: relative;
 		min-height: 1px;
 		float: left;
-		width: 33.33333333%;
+		width: min(100%, 28rem);
 	}
 
 	.nfl-no-pad-lr {
@@ -161,8 +161,8 @@
 
 	/* Nutrition Label */
 	#facts {
-		margin-top: 20px;
-		margin-right: 1rem;
+		margin: 20px 0 0;
+		box-sizing: border-box;
 		z-index: 10;
 		background: #fff;
 		border: 1px solid #000;
@@ -301,36 +301,6 @@
 		left: 12px;
 	}
 
-	#facts .facts_table {
-		margin-left: 10px;
-		margin-right: 10px;
-		color: #000;
-	}
-
-	#facts table {
-		width: 100%;
-	}
-
-	#facts table th,
-	#facts table td {
-		font-size: 11px;
-		line-height: 11px;
-	}
-
-	#facts table th {
-		text-align: left;
-		padding-bottom: 1px;
-	}
-
-	#facts table td {
-		padding: 3px 0 0px;
-		vertical-align: bottom;
-	}
-
-	#facts table tbody {
-		border-top: 1px solid #4c4849;
-	}
-
 	@media (max-width: 767px) {
 		#facts .facts_title {
 			font-size: 33px !important;
@@ -349,9 +319,6 @@
 		}
 		#facts .facts_serving_pre {
 			padding-top: 3px;
-		}
-		#facts .facts_serving_pre .marker q {
-			top: -1px !important;
 		}
 		.calorieamt {
 			top: -5px;

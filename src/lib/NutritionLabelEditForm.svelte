@@ -291,7 +291,7 @@
 <style>
 	article {
 		box-sizing: border-box;
-		width: min(100%, 390px);
+		width: min(100%, 28rem);
 		color: #000;
 		font-family: Arial, Helvetica, sans-serif;
 	}

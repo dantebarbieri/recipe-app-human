@@ -70,10 +70,10 @@
 
 <style>
 	a {
-		text-decoration: none;
+		display: block;
 		color: inherit;
-        width: fit-content;
-        display: block;
+		text-decoration: none;
+		min-width: 0;
 	}
 
 	.title {
@@ -81,15 +81,30 @@
 	}
 
 	.recipe-card {
+		box-sizing: border-box;
+		width: 100%;
+		height: 100%;
+		min-width: 0;
+		overflow-wrap: anywhere;
+
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-        gap: 0.5em;
+		gap: 0.5em;
+
 		border-style: solid;
-		min-width: 20%;
-		width: fit-content;
 		padding: 0.5em;
 		border-radius: 3px;
+
+		transition:
+			box-shadow 0.2s ease,
+			transform 0.2s ease;
+	}
+
+	a:hover .recipe-card,
+	a:focus-visible .recipe-card {
+		box-shadow: 0.25rem 0.25rem 0.5rem rgb(0 0 0 / 30%);
+		transform: translateY(-0.125rem);
 	}
 
 	.timing,
@@ -102,7 +117,7 @@
 
 	.timing {
 		justify-content: space-between;
-        gap: 0.67em;
+		gap: 0.67em;
 	}
 
 	.metadata {
@@ -112,6 +127,13 @@
 	.tags {
 		display: flex;
 		gap: 0.33em;
+		justify-content: center;
+	}
+
+	.timing,
+	.metadata,
+	.tags {
+		flex-wrap: wrap;
 	}
 
 	.tag {
@@ -120,7 +142,8 @@
 		padding: 0 0.5em;
 	}
 
-    .tag:hover, .tag:focus {
-        background-color: #eee;
-    }
+	.tag:hover,
+	.tag:focus {
+		background-color: #eee;
+	}
 </style>
