@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { submit, type FormSubmitResult } from '$lib/form';
 import { error, isActionFailure, redirect, type ActionFailure } from '@sveltejs/kit';
-import { getRecipeFromDatabase } from '$lib/db';
+import { deleteRecipeFromDatabase, getRecipeFromDatabase } from '$lib/db';
 
 export const load: PageServerLoad = async ({ params }) => {
     const recipe = await getRecipeFromDatabase(params.slug);
@@ -14,17 +14,19 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions = {
-    default: async (event) => {
+    save: async (event) => {
         const data = await event.request.formData();
-        const slug = event.params.slug;
-
-        const result = await submit(data, slug);
+        const result = await submit(data, event.params.slug);
 
         if (isActionFailure(result)) {
             return result as unknown as ActionFailure<FormSubmitResult>;
-        } else {
-            const savedSlug = (result as { slug: string }).slug;
-            return redirect(303, `/recipes/${savedSlug}`);
         }
+
+        return redirect(303, `/recipes/${(result as { slug: string }).slug}`);
+    },
+
+    delete: async ({ params }) => {
+        await deleteRecipeFromDatabase(params.slug);
+        return redirect(303, '/');
     }
 } satisfies Actions;

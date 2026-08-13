@@ -41,6 +41,10 @@ export const checkRecipeDatabase = async (): Promise<void> => {
     await fs.readdir(directory);
 };
 
+export const deleteRecipeFromDatabase = async (slug: string): Promise<void> => {
+	await fs.unlink(getPathFromSlug(slug));
+};
+
 export const getRecipeFromDatabase = async (slug: string): Promise<Recipe | undefined> => {
     const path = getPathFromSlug(slug)
 

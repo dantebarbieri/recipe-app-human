@@ -94,7 +94,7 @@
 	}
 </script>
 
-<form method="POST">
+<form method="POST" action={mode === 'edit' ? '?/save' : undefined}>
 	<label>
 		ID:
 		<input
@@ -292,6 +292,20 @@
 	<button type="submit">
 		{#if mode === 'create'}Create{:else}Save{/if} Recipe
 	</button>
+	{#if mode === 'edit'}
+		<button
+			type="submit"
+			formaction="?/delete"
+			formnovalidate
+			onclick={(event) => {
+				if (!confirm(`Delete "${title}"? This cannot be undone.`)) {
+					event.preventDefault();
+				}
+			}}
+		>
+			Delete Recipe
+		</button>
+	{/if}
 </form>
 
 <style>
