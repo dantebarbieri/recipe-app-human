@@ -154,3 +154,24 @@ export const roundProtein = (p: number): string => {
             return maxDecimals(roundNearest(p, 1), 0);
     }
 }
+
+export const formatTime = (minutes: number): string => {
+    let time = minutes;
+    const days = Math.floor(time / (24 /* hours */ * 60 /* minutes */));
+    time -= days * (24 /* hours */ * 60 /* minutes */);
+    const hours = Math.floor(time / 60 /* minutes */);
+    time -= hours * 60;
+    const mins = Math.floor(time);
+
+    const retval: string[] = [];
+    if (days > 0) {
+        retval.push(`${days} d`)
+    }
+    if (hours > 0) {
+        retval.push(`${hours} h`)
+    }
+    if (mins > 0) {
+        retval.push(`${mins} m`)
+    }
+    return retval.join(' ');
+}

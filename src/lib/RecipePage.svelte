@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Recipe } from '$lib/assets/types/recipe';
+	import { formatTime, toVulgar, vulgarString } from '$lib/util';
 
 	interface Props {
 		recipe: Recipe;
@@ -20,10 +21,29 @@
 		{/each}
 	</div>
 {/if}
+{#if recipe.prepTime || recipe.cookTime || recipe.totalTime}
+	<table class="timings">
+		<thead>
+			<tr>
+				{#if recipe.prepTime}<th scope="col">Prep Time</th>{/if}
+				{#if recipe.cookTime}<th scope="col">Cook Time</th>{/if}
+				{#if recipe.totalTime}<th scope="col">Total Time</th>{/if}
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				{#if recipe.prepTime}<td>{formatTime(recipe.prepTime)}</td>{/if}
+				{#if recipe.cookTime}<td>{formatTime(recipe.cookTime)}</td>{/if}
+				{#if recipe.totalTime}<td>{formatTime(recipe.totalTime)}</td>{/if}
+			</tr>
+		</tbody>
+	</table>
+{/if}
 <h2 id="ingredients">Ingredients</h2>
 <ul>
 	{#each recipe.ingredients as ingredient}
-		<li>{ingredient.quantity} {ingredient.unit} {ingredient.name}</li>
+		{const vulgar = toVulgar(ingredient.quantity)}
+		<li>{vulgar ? vulgarString(vulgar) : ingredient.quantity} {ingredient.unit} {ingredient.name}</li>
 	{/each}
 </ul>
 <h2 id="steps">Steps</h2>
