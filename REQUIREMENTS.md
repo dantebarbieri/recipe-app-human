@@ -9,17 +9,18 @@
 - Recipes can be edited on the frontend and persisted in the database (save)
 - Recipes can be deleted on the frontend when in edit mode
 - Supports "view" and "edit" modes
-- Shows a picture (or pictures) of the recipe
+- Recipes get a nutrition label which matches the visual style for FDA nutrition labels when information is provided for the recipe
+- Basic recipe validation on the frontend to hint to users when their input is wrong
+- Handles backend validation errors on frontend to indicate what is wrong with inputs
 
 ## Backend
 
-- Connects to a persistent database to load & store recipes
+- Connects to a persistent database manage recipes
 - No auth handling (this is a demo)
-- Enumerates recipes and handles search/filtering
-- Pagination support
-- Responds to HTTP verbs PUT, GET, DELETE
+- Enumerates recipes
+- Handles create, edit, delete
 - Enforces recipes conform to the schema
-- Handles converting uploaded images and persisting them in proper size/format
+- Validates recipe information and returns errors to frontend
 
 ## Database
 
